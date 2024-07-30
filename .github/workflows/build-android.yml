@@ -1,0 +1,50 @@
+name: Android Build
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: false
+        type: string
+        default: release
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install Node modules
+        run: npm ci
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 20
+          cache: gradle
+
+      - name: Build Android (Release)
+        if: inputs.environment == 'release'
+        run: npm exec -- react-native build-android --tasks bundleRelease,assembleRelease
+
+      - name: Build Android (Debug)
+        if: inputs.environment == 'debug'
+        run: npm exec -- react-native build-android --tasks bundleDebug,assembleDebug
+
+      - name: Upload Android Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{inputs.environment}}.aab
+          path: android/app/build/outputs/bundle/${{inputs.environment}}/app-${{inputs.environment}}.aab
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{inputs.environment}}.apk
+          path: android/app/build/outputs/apk/${{inputs.environment}}/app-${{inputs.environment}}.apk

@@ -1,0 +1,14 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build-android:
+    uses: ./.github/workflows/build-android.yml
+    secrets: inherit
+  build-ios:
+    uses: ./.github/workflows/build-ios.yml
+    secrets: inherit

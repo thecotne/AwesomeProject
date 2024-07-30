@@ -1,0 +1,29 @@
+name: iOS Build
+
+on:
+  workflow_call:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install Node modules
+        run: npm ci
+
+      - name: Install CocoaPods
+        run: bundle install
+
+      - name: Install Pods
+        run: bundle exec pod install
+        working-directory: ios
+
+      - name: Build iOS (Debug)
+        run: npm exec -- react-native build-ios
