@@ -6,6 +6,7 @@ on:
 jobs:
   build-ios:
     runs-on: macos-latest
+    environment: main
     steps:
       - uses: actions/checkout@v4
 
