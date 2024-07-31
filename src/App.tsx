@@ -1,10 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
+import * as Sentry from '@sentry/react-native';
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -115,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Sentry.wrap(App);

@@ -17,6 +17,12 @@ jobs:
 
       - name: Install Node modules
         run: npm ci
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          SENTRY_ORG: test-eji
+          SENTRY_PROJECT: awesome-project
+          SENTRY_URL: https://sentry.io/
 
       - name: Install CocoaPods
         run: bundle install
